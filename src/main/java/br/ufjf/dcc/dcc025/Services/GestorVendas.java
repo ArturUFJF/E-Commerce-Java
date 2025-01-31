@@ -1,4 +1,4 @@
-package br.ufjf.dcc.dcc025;
+package br.ufjf.dcc.dcc025.Services;
 
 interface Relatorio {
     void gerarRelatorioVendas();

@@ -21,6 +21,12 @@
             <version>26.0.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.4</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -38,7 +44,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>br.ufjf.dcc.dcc025.Main</mainClass>
+                            <mainClass>br.ufjf.dcc.dcc025.Models.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
