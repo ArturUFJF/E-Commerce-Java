@@ -1,5 +1,8 @@
 package br.ufjf.dcc.dcc025.Models;
 
+import br.ufjf.dcc.dcc025.Exceptions.CupomInvalidoException;
+import br.ufjf.dcc.dcc025.Services.GestorVendas;
+
 import java.util.Objects;
 
 public abstract class Cupom {
@@ -9,10 +12,11 @@ public abstract class Cupom {
 
     public Cupom(){}
 
-    public Cupom(String codigo, float percentualDesconto, boolean ativo) {
+    public Cupom(String codigo, float percentualDesconto, boolean ativo, GestorVendas gestor) {
         this.codigo = codigo;
         this.percentualDesconto = percentualDesconto;
         this.ativo = ativo;
+        gestor.cadastrarCupom(this);
     }
 
     public String getCodigo() {
@@ -60,12 +64,14 @@ class CupomQuantidadeLimitada extends Cupom {
     private int maximoUtilizacoes;
     private int utilizacoesAtuais;
 
-    public CupomQuantidadeLimitada() {}
+    public CupomQuantidadeLimitada(GestorVendas gestor) {
+        gestor.cadastrarCupom(this);
+    }
 
-    public CupomQuantidadeLimitada(String codigo, float percentualDesconto, boolean ativo, int maximoUtilizacoes, int utilizacoesAtuais) {
-        super(codigo, percentualDesconto, ativo);
+    public CupomQuantidadeLimitada(String codigo, float percentualDesconto, boolean ativo, int maximoUtilizacoes, GestorVendas gestor) {
+        super(codigo, percentualDesconto, ativo, gestor);
         this.maximoUtilizacoes = maximoUtilizacoes;
-        this.utilizacoesAtuais = utilizacoesAtuais;
+        this.utilizacoesAtuais = maximoUtilizacoes;
     }
 
     public int getMaximoUtilizacoes() {
@@ -84,6 +90,18 @@ class CupomQuantidadeLimitada extends Cupom {
         this.utilizacoesAtuais = utilizacoesAtuais;
     }
 
+    public void aplicarCupom(Produto produto) throws CupomInvalidoException{
+        if(utilizacoesAtuais > 0) {
+            produto.setPreco(produto.getPreco() * (this.getPercentualDesconto()/100));
+            utilizacoesAtuais--;
+        }
+
+        else {
+            this.setAtivo(false);
+            throw new CupomInvalidoException("Não há mais utilizações disponíveis no cupom!");
+        }
+    }
+
 }
 
 
@@ -93,8 +111,8 @@ class CupomValorMinimo extends Cupom {
 
     public CupomValorMinimo() {}
 
-    public CupomValorMinimo(String codigo, float percentualDesconto, boolean ativo, float valorMinimo) {
-        super(codigo, percentualDesconto, ativo);
+    public CupomValorMinimo(String codigo, float percentualDesconto, boolean ativo, float valorMinimo, GestorVendas gestor) {
+        super(codigo, percentualDesconto, ativo, gestor);
         this.valorMinimo = valorMinimo;
     }
 
@@ -106,4 +124,10 @@ class CupomValorMinimo extends Cupom {
         this.valorMinimo = valorMinimo;
     }
 
+    public void aplicarCupom (Produto produto) throws CupomInvalidoException{
+        if(produto.getPreco() >= this.getValorMinimo())
+            produto.setPreco(produto.getPreco() * (this.getPercentualDesconto()/100));
+        else
+            throw new CupomInvalidoException("Produto possui valor menor que o mínimo necessário!");
+    }
 }

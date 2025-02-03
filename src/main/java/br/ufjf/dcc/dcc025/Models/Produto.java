@@ -1,11 +1,12 @@
 package br.ufjf.dcc.dcc025.Models;
 
 import java.util.Objects;
+import java.time.LocalDate;
 
 public abstract class Produto {
     private int id;
     private String nome;
-    private float preco;
+    private double preco;
 
     public Produto(){}
 
@@ -13,6 +14,7 @@ public abstract class Produto {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
+        System.out.println("Produto " + id + " cadastrado: " + nome + ". R$" + preco );
     }
 
     public int getId() {
@@ -31,11 +33,11 @@ public abstract class Produto {
         this.nome = nome;
     }
 
-    public float getPreco() {
+    public double getPreco() {
         return preco;
     }
 
-    public void setPreco(float preco) {
+    public void setPreco(double preco) {
         this.preco = preco;
     }
 
@@ -56,9 +58,9 @@ public abstract class Produto {
 
 
 class Eletronicos extends Produto {
-    private String garantia;
+    private LocalDate garantia;
 
-    public Eletronicos(int id, String nome, float preco, String garantia) {
+    public Eletronicos(int id, String nome, float preco, LocalDate garantia) {
         super(id, nome, preco);
         this.garantia = garantia;
     }
@@ -80,9 +82,9 @@ class Roupas extends Produto {
 
 
 class Alimentos extends Produto {
-    private String validade;
+    private LocalDate validade;
 
-    public Alimentos(int id, String nome, float preco, String validade) {
+    public Alimentos(int id, String nome, float preco, LocalDate validade) {
         super(id, nome, preco);
         this.validade = validade;
     }
