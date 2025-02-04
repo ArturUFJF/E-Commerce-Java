@@ -90,9 +90,9 @@ class CupomQuantidadeLimitada extends Cupom {
         this.utilizacoesAtuais = utilizacoesAtuais;
     }
 
-    public void aplicarCupom(Produto produto) throws CupomInvalidoException{
+    public void aplicarCupom(Venda venda) throws CupomInvalidoException{
         if(utilizacoesAtuais > 0) {
-            produto.setPreco(produto.getPreco() * (this.getPercentualDesconto()/100));
+            venda.setValorTotal(venda.getValorTotal() * (this.getPercentualDesconto()/100));
             utilizacoesAtuais--;
         }
 
@@ -124,10 +124,10 @@ class CupomValorMinimo extends Cupom {
         this.valorMinimo = valorMinimo;
     }
 
-    public void aplicarCupom (Produto produto) throws CupomInvalidoException{
-        if(produto.getPreco() >= this.getValorMinimo())
-            produto.setPreco(produto.getPreco() * (this.getPercentualDesconto()/100));
+    public void aplicarCupom (Venda venda) throws CupomInvalidoException{
+        if(venda.getValorTotal() >= this.getValorMinimo())
+            venda.setValorTotal(venda.getValorTotal() * (this.getPercentualDesconto()/100));
         else
-            throw new CupomInvalidoException("Produto possui valor menor que o mínimo necessário!");
+            throw new CupomInvalidoException("Venda possui valor menor que o mínimo necessário!");
     }
 }

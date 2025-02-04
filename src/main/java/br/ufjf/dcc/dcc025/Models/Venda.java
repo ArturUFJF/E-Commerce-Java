@@ -1,4 +1,5 @@
 package br.ufjf.dcc.dcc025.Models;
+
 import br.ufjf.dcc.dcc025.Services.GestorVendas;
 import br.ufjf.dcc.dcc025.Exceptions.CupomInvalidoException;
 import java.util.*;
@@ -7,6 +8,7 @@ public class Venda {
     private int id;
     private ArrayList<Produto> produtos = new ArrayList<>();
     private Cupom cupom;
+    private double valorTotal;
 
     public Venda(GestorVendas gestor) {
         gestor.cadastrarVenda(this);
@@ -41,6 +43,14 @@ public class Venda {
         this.cupom = cupom;
     }
 
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,6 +65,26 @@ public class Venda {
     }
 
     public void realizarVenda() {
+        // Calculando valor total sem desconto
+        valorTotal = 0;
+        for (Produto p : produtos) {
+            valorTotal += p.getPreco();
+        }
+
+        // Aplicação de cupom se houver
+        if (cupom != null && cupom.isAtivo()) {
+            try {
+                if (cupom instanceof CupomQuantidadeLimitada) {
+                    ((CupomQuantidadeLimitada) cupom).aplicarCupom(this);
+                } else if (cupom instanceof CupomValorMinimo) {
+                    ((CupomValorMinimo) cupom).aplicarCupom(this);
+                }
+            } catch (CupomInvalidoException e) {
+                System.out.println("Aviso: " + e.getMessage());
+            }
+        }
+
+        // Exibir os detalhes da venda após o cálculo correto do valor total
         exibirVenda();
     }
 
@@ -71,23 +101,9 @@ public class Venda {
         if (!produtos.isEmpty()) {
             System.out.println("\nProdutos:");
             for (Produto p : produtos) {
-                double precoFinal = p.getPreco();
-
-                if (cupom != null && cupom.isAtivo()) {
-                    try {
-                        if (cupom instanceof CupomQuantidadeLimitada) {
-                            ((CupomQuantidadeLimitada) cupom).aplicarCupom(p);
-                        } else if (cupom instanceof CupomValorMinimo) {
-                            ((CupomValorMinimo) cupom).aplicarCupom(p);
-                        }
-                        precoFinal = p.getPreco() * (1 - (cupom.getPercentualDesconto() / 100.0));
-                    } catch (CupomInvalidoException e) {
-                        System.out.println("Aviso: " + e.getMessage());
-                    }
-                }
-
-                System.out.printf("- %s | Preço final: R$%.2f\n", p.getNome(), precoFinal);
+                System.out.printf("- %s | Preço: R$%.2f\n", p.getNome(), p.getPreco());
             }
+            System.out.printf("\nValor total da venda: R$%.2f\n", valorTotal);
         } else {
             System.out.println("Nenhum produto adicionado.");
         }
