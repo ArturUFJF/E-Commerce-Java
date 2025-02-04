@@ -16,15 +16,28 @@ public class GestorVendas implements Relatorio {
     private List<Venda> vendas;
     private List<Cupom> cuponsAtivos;
 
+    public List<Venda> getVendas() {
+        return vendas;
+    }
+
+    public List<Cupom> getCuponsAtivos() {
+        return cuponsAtivos;
+    }
+
     public GestorVendas() {
         this.vendas = new ArrayList<>();
         this.cuponsAtivos = new ArrayList<>();
     }
 
     public void cadastrarVenda(Venda venda) {
-        vendas.add(venda);
-        System.out.println("Venda cadastrada com sucesso: ID " + venda.getId());
+        if (venda != null && !vendas.contains(venda)) { // Evita vendas duplicadas
+            vendas.add(venda);
+            System.out.println("Venda cadastrada com sucesso: ID " + venda.getId());
+        } else {
+            System.out.println("Erro: Venda já cadastrada ou inválida.");
+        }
     }
+
 
     public void cadastrarCupom(Cupom cupom) {
         cuponsAtivos.add(cupom);
@@ -38,9 +51,10 @@ public class GestorVendas implements Relatorio {
             return;
         }
 
-        System.out.println("\n=== Relatório de Vendas ===");
+        System.out.println("=== Relatório de Vendas ===");
         for (Venda venda : vendas) {
             venda.exibirVenda();
+            System.out.println("------------------------");
         }
     }
 

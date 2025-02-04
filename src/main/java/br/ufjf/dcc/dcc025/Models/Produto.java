@@ -1,5 +1,6 @@
 package br.ufjf.dcc.dcc025.Models;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.time.LocalDate;
 
@@ -14,7 +15,6 @@ public abstract class Produto {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
-        System.out.println("Produto " + id + " cadastrado: " + nome + ". R$" + preco );
     }
 
     public int getId() {
@@ -63,6 +63,8 @@ class Eletronicos extends Produto {
     public Eletronicos(int id, String nome, float preco, LocalDate garantia) {
         super(id, nome, preco);
         this.garantia = garantia;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        System.out.println("Produto(Eletrônico) " + id + " cadastrado: " + nome + ". R$" + preco + " - Garantia até " + garantia.format(formatter));
     }
 }
 
@@ -76,6 +78,7 @@ class Roupas extends Produto {
         super(id, nome, preco);
         this.tamanho = tamanho;
         this.cor = cor;
+        System.out.println("Produto(Roupa) " + id + " cadastrado: " + nome + ". R$" + preco + " - Tamanho " + tamanho + " " + cor);
     }
 }
 
@@ -87,5 +90,7 @@ class Alimentos extends Produto {
     public Alimentos(int id, String nome, float preco, LocalDate validade) {
         super(id, nome, preco);
         this.validade = validade;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        System.out.println("Produto(Alimento) " + id + " cadastrado: " + nome + ". R$" + preco + " - Validade até " + validade.format(formatter));
     }
 }

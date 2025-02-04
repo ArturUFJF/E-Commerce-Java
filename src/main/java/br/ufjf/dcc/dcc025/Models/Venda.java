@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Venda {
     private int id;
-    private List<Produto> produtos;
+    private ArrayList<Produto> produtos;
     private double valorTotal;
     private Cupom cupom;
     private boolean cupomAplicado;
@@ -20,7 +20,6 @@ public class Venda {
         this.valorTotal = 0;
         this.gestor = gestor;
         this.cupomAplicado = false;
-        gestor.cadastrarVenda(this);
     }
 
     public int getId() {
@@ -31,8 +30,8 @@ public class Venda {
         return produtos;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void adicionarProduto(Produto produto) {
+        this.produtos.add(produto);
     }
 
     public double getValorTotal() {
@@ -68,6 +67,7 @@ public class Venda {
         }
 
         exibirVenda();
+        gestor.cadastrarVenda(this);
     }
 
     public void exibirVenda() {

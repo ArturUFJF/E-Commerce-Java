@@ -94,6 +94,9 @@ class CupomQuantidadeLimitada extends Cupom {
         if(utilizacoesAtuais > 0) {
             venda.setValorTotal(venda.getValorTotal() * (this.getPercentualDesconto()/100));
             utilizacoesAtuais--;
+
+            if(utilizacoesAtuais == 0)
+                this.setAtivo(false);
         }
 
         else {
