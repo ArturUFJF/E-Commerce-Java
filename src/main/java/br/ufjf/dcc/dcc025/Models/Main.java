@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+        //SCROLLAR ATÉ O TOPO DO CONSOLE PARA VER TODOS OS CENÁRIOS CORRETAMENTE
 
         // CRIANDO GESTOR DE VENDAS
         GestorVendas gestor = new GestorVendas();

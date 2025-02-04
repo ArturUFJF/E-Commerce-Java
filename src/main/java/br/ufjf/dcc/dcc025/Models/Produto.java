@@ -64,7 +64,7 @@ class Eletronicos extends Produto {
         super(id, nome, preco);
         this.garantia = garantia;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        System.out.println("Produto(Eletrônico) " + id + " cadastrado: " + nome + ". R$" + preco + " - Garantia até " + garantia.format(formatter));
+        System.out.println("Produto(Eletrônico) de ID " + id + " cadastrado: " + nome + ". R$" + preco + " - Garantia até " + garantia.format(formatter));
     }
 }
 
@@ -78,7 +78,7 @@ class Roupas extends Produto {
         super(id, nome, preco);
         this.tamanho = tamanho;
         this.cor = cor;
-        System.out.println("Produto(Roupa) " + id + " cadastrado: " + nome + ". R$" + preco + " - Tamanho " + tamanho + " " + cor);
+        System.out.println("Produto(Roupa) de ID " + id + " cadastrado: " + nome + ". R$" + preco + " - Tamanho " + tamanho + " " + cor);
     }
 }
 
@@ -91,6 +91,6 @@ class Alimentos extends Produto {
         super(id, nome, preco);
         this.validade = validade;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        System.out.println("Produto(Alimento) " + id + " cadastrado: " + nome + ". R$" + preco + " - Validade até " + validade.format(formatter));
+        System.out.println("Produto(Alimento) de ID " + id + " cadastrado: " + nome + ". R$" + preco + " - Validade até " + validade.format(formatter));
     }
 }
