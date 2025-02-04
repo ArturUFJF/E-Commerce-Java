@@ -4,6 +4,7 @@ import br.ufjf.dcc.dcc025.Models.Cupom;
 import br.ufjf.dcc.dcc025.Models.Venda;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 interface Relatorio {
@@ -39,12 +40,20 @@ public class GestorVendas implements Relatorio {
 
         System.out.println("\n=== Relatório de Vendas ===");
         for (Venda venda : vendas) {
-            venda.realizarVenda();
+            venda.exibirVenda();
         }
     }
 
     @Override
     public void listarCuponsAtivos() {
+        Iterator<Cupom> iterator = cuponsAtivos.iterator();
+        while (iterator.hasNext()) {
+            Cupom cupom = iterator.next();
+            if (!cupom.isAtivo()) {
+                iterator.remove();
+            }
+        }
+
         if (cuponsAtivos.isEmpty()) {
             System.out.println("Nenhum cupom ativo.");
             return;
@@ -55,5 +64,4 @@ public class GestorVendas implements Relatorio {
             System.out.println("- " + cupom.getCodigo() + " | Desconto: " + cupom.getPercentualDesconto() + "%");
         }
     }
-
 }

@@ -69,5 +69,11 @@ public class Main {
         vendaTeste4.setProdutos(produtosVenda4);
         vendaTeste4.realizarVenda();
         System.out.println("------------------------");
+
+
+        //IMPRIMINDO RELATÓRIOS
+        System.out.println("\nRELATÓRIOS:");
+        gestor.gerarRelatorioVendas();
+        gestor.listarCuponsAtivos();
     }
 }
