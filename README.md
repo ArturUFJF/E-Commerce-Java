@@ -50,5 +50,5 @@ Artur Ferreira de Castro
 
 ---
 
-Este projeto foi desenvolvido como parte de estudos e práticas em desenvolvimento de software.
+Este projeto foi desenvolvido como parte de estudos e práticas da disciplina de Orientação a Objeto.
 
