@@ -16,6 +16,7 @@ class SistemaVendasTest {
     private Produto notebook;
     private Produto camisetaGucci;
 
+    //set-up default pra todos os testes
     @BeforeEach
     void setUp() {
         gestor = new GestorVendas();
@@ -94,4 +95,61 @@ class SistemaVendasTest {
         assertTrue(gestor.getCuponsAtivos().contains(cupomMinimo));
         assertTrue(gestor.getCuponsAtivos().contains(cupomLimitado));
     }
+
+    @Test
+    void testAplicacaoCupomInvalido() {
+        Venda venda = new Venda(6);
+        Cupom cupomInvalido = new CupomQuantidadeLimitada("CupomInativo", 20, false, 1, gestor);
+        venda.setCupom(cupomInvalido);
+        VendaService.adicionarProduto(venda, notebook);
+
+        // Finaliza a venda (não lança exceção)
+        VendaService.finalizarVenda(venda, gestor);
+
+        // Como o cupom é inválido, o valor total não deve ser alterado
+        assertEquals(3000, venda.getValorTotal(), 0.01);
+    }
+
+
+    @Test
+    void testAdicionarProdutosVenda() {
+        Venda venda = new Venda(7);
+        VendaService.adicionarProduto(venda, pizza);
+        VendaService.adicionarProduto(venda, notebook);
+
+        assertEquals(2, venda.getProdutos().size());
+        assertTrue(venda.getProdutos().contains(pizza));
+        assertTrue(venda.getProdutos().contains(notebook));
+        //Verifica se os produtos adicionados realmente estão no array de produtos da venda
+    }
+
+    @Test
+    void testVendaSemProdutos() {
+        Venda venda = new Venda(8);
+        VendaService.finalizarVenda(venda, gestor);
+
+        assertEquals(0, venda.getValorTotal(), 0.01);
+        assertEquals(0, venda.getProdutos().size());
+        //Testa o funcionamento de uma venda sem produtos
+    }
+
+    @Test
+    void testCupomUsoMultiplo() throws CupomInvalidoException {
+        Cupom cupomMultiplo = new CupomQuantidadeLimitada("MultiUse", 10, true, 5, gestor);
+        Venda venda1 = new Venda(9);
+        Venda venda2 = new Venda(10);
+
+        venda1.setCupom(cupomMultiplo);
+        venda2.setCupom(cupomMultiplo);
+
+        VendaService.adicionarProduto(venda1, notebook);
+        VendaService.finalizarVenda(venda1, gestor);
+
+        VendaService.adicionarProduto(venda2, notebook);
+        VendaService.finalizarVenda(venda2, gestor);
+
+        // O cupom ainda deve estar ativo, pois tem limite de 5 usos
+        assertTrue(cupomMultiplo.isAtivo());
+    }
+
 }

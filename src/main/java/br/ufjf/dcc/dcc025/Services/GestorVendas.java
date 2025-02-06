@@ -29,6 +29,7 @@ public class GestorVendas implements Relatorio {
         this.cuponsAtivos = new ArrayList<>();
     }
 
+    //Adiciona venda ao array de vendas do gestor
     public void cadastrarVenda(Venda venda) {
         if (venda != null && !vendas.contains(venda)) { // Evita vendas duplicadas
             vendas.add(venda);
@@ -38,12 +39,13 @@ public class GestorVendas implements Relatorio {
         }
     }
 
-
+    //Adiciona o cupom ao array de cupons válidos
     public void cadastrarCupom(Cupom cupom) {
         cuponsAtivos.add(cupom);
         System.out.println("Cupom cadastrado: " + cupom.getCodigo());
     }
 
+    //Gera um relatório com todas as vendas feitas
     @Override
     public void gerarRelatorioVendas() {
         if (vendas.isEmpty()) {
@@ -58,6 +60,7 @@ public class GestorVendas implements Relatorio {
         }
     }
 
+    //Lista os cupons ainda ativos
     @Override
     public void listarCuponsAtivos() {
         Iterator<Cupom> iterator = cuponsAtivos.iterator();

@@ -8,6 +8,7 @@ import br.ufjf.dcc.dcc025.Models.Venda;
 
 public class CupomService {
 
+    //Verifica se um cupom pode ser aplicado a uma venda e, caso possa, aplica esse cupom sobre o valor total
     public static void aplicarCupom(Venda venda, Cupom cupom) throws CupomInvalidoException {
         if (cupom == null) {
             throw new CupomInvalidoException("Cupom inválido! O cupom não pode ser nulo.");
@@ -26,6 +27,7 @@ public class CupomService {
         }
     }
 
+    //Lógica da aplicação de cupom para um de quantidade limitada
     private static void aplicarCupomQuantidadeLimitada(Venda venda, CupomQuantidadeLimitada cupom) throws CupomInvalidoException {
         if (cupom.getUtilizacoesAtuais() <= 0) {
             cupom.setAtivo(false);
@@ -42,6 +44,7 @@ public class CupomService {
         }
     }
 
+    //Lógica da aplicação de cupom para um de valor mínimo
     private static void aplicarCupomValorMinimo(Venda venda, CupomValorMinimo cupom) throws CupomInvalidoException {
         if (venda.getValorTotal() < cupom.getValorMinimo()) {
             throw new CupomInvalidoException("Venda possui valor menor que o mínimo necessário!");
