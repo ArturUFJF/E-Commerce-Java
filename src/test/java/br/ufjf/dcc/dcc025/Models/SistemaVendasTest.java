@@ -1,7 +1,7 @@
 package br.ufjf.dcc.dcc025.Models;
 
 import br.ufjf.dcc.dcc025.Exceptions.CupomInvalidoException;
-import br.ufjf.dcc.dcc025.Services.GestorVendas;
+import br.ufjf.dcc.dcc025.Services.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,10 +32,10 @@ class SistemaVendasTest {
 
     @Test
     void testAplicacaoCupomQuantidadeLimitada() throws CupomInvalidoException {
-        Venda venda = new Venda(1, gestor);
+        Venda venda = new Venda(1);
         venda.setCupom(cupomLimitado);
-        venda.adicionarProduto(notebook);
-        venda.realizarVenda();
+        VendaService.adicionarProduto(venda, notebook);
+        VendaService.finalizarVenda(venda, gestor);
 
         // O desconto de 50% deve ser aplicado corretamente
         assertEquals(1500, venda.getValorTotal(), 0.01);
@@ -46,10 +46,10 @@ class SistemaVendasTest {
 
     @Test
     void testAplicacaoCupomValorMinimo() throws CupomInvalidoException {
-        Venda venda = new Venda(2, gestor);
+        Venda venda = new Venda(2);
         venda.setCupom(cupomMinimo);
-        venda.adicionarProduto(notebook);
-        venda.realizarVenda();
+        VendaService.adicionarProduto(venda, notebook);
+        VendaService.finalizarVenda(venda, gestor);
 
         // O desconto de 50% deve ser aplicado corretamente
         assertEquals(1500, venda.getValorTotal(), 0.01);
@@ -57,10 +57,10 @@ class SistemaVendasTest {
 
     @Test
     void testCupomValorMinimoNaoAplicado() throws CupomInvalidoException {
-        Venda venda = new Venda(3, gestor);
+        Venda venda = new Venda(3);
         venda.setCupom(cupomMinimo);
-        venda.adicionarProduto(pizza);
-        venda.realizarVenda();
+        VendaService.adicionarProduto(venda, pizza);
+        VendaService.finalizarVenda(venda, gestor);
 
         // O valor deve permanecer inalterado, pois a pizza não atinge o valor mínimo do cupom
         assertEquals(20, venda.getValorTotal(), 0.01);
@@ -68,10 +68,10 @@ class SistemaVendasTest {
 
     @Test
     void testCalculoTotalSemCupom() {
-        Venda venda = new Venda(4, gestor);
-        venda.adicionarProduto(pizza);
-        venda.adicionarProduto(camisetaGucci);
-        venda.realizarVenda();
+        Venda venda = new Venda(4);
+        VendaService.adicionarProduto(venda, pizza);
+        VendaService.adicionarProduto(venda, camisetaGucci);
+        VendaService.finalizarVenda(venda, gestor);
 
         // Total esperado: 20 + 10000 = 10020
         assertEquals(10020, venda.getValorTotal(), 0.01);
@@ -79,9 +79,9 @@ class SistemaVendasTest {
 
     @Test
     void testRelatorioVendas() {
-        Venda venda = new Venda(5, gestor);
-        venda.adicionarProduto(notebook);
-        venda.realizarVenda();
+        Venda venda = new Venda(5);
+        VendaService.adicionarProduto(venda, notebook);
+        VendaService.finalizarVenda(venda, gestor);
         gestor.cadastrarVenda(venda); //Tentativa de cadastrar venda com mesmo ID, que já é cadastrada quando realizada
 
         assertEquals(1, gestor.getVendas().size());

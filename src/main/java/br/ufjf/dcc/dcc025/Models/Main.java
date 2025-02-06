@@ -1,6 +1,6 @@
 package br.ufjf.dcc.dcc025.Models;
 
-import br.ufjf.dcc.dcc025.Services.GestorVendas;
+import br.ufjf.dcc.dcc025.Services.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,36 +30,36 @@ public class Main {
 
         // Primeira venda
         System.out.println("=VENDA 1=");
-        Venda vendaTeste = new Venda(1, gestor);
+        Venda vendaTeste = new Venda(1);
         vendaTeste.setCupom(cupomLimitado);
-        vendaTeste.adicionarProduto(pizza);
-        vendaTeste.adicionarProduto(notebook);
-        vendaTeste.adicionarProduto(camisetaGucci);
-        vendaTeste.realizarVenda();
+        VendaService.adicionarProduto(vendaTeste, pizza);
+        VendaService.adicionarProduto(vendaTeste, notebook);
+        VendaService.adicionarProduto(vendaTeste, camisetaGucci);
+        VendaService.finalizarVenda(vendaTeste, gestor);
         System.out.println("------------------------");
 
         // Segunda venda - Usa o mesmo cupom limitado
         System.out.println("\n=VENDA 2=");
-        Venda vendaTeste2 = new Venda(2, gestor);
+        Venda vendaTeste2 = new Venda(2);
         vendaTeste2.setCupom(cupomLimitado);
-        vendaTeste2.adicionarProduto(camisetaGucci);
-        vendaTeste2.realizarVenda();
+        VendaService.adicionarProduto(vendaTeste2, camisetaGucci);
+        VendaService.finalizarVenda(vendaTeste2, gestor);
         System.out.println("------------------------");
 
         // Terceira venda - Usa o cupom de valor mínimo com notebook
         System.out.println("\n=VENDA 3=");
-        Venda vendaTeste3 = new Venda(3, gestor);
+        Venda vendaTeste3 = new Venda(3);
         vendaTeste3.setCupom(cupomMinimo);
-        vendaTeste3.adicionarProduto(notebook);
-        vendaTeste3.realizarVenda();
+        VendaService.adicionarProduto(vendaTeste3, notebook);
+        VendaService.finalizarVenda(vendaTeste3, gestor);
         System.out.println("------------------------");
 
         // Quarta venda - Usa o cupom de valor mínimo com pizza
         System.out.println("\n=VENDA 4=");
-        Venda vendaTeste4 = new Venda(4, gestor);
+        Venda vendaTeste4 = new Venda(4);
         vendaTeste4.setCupom(cupomMinimo);
-        vendaTeste4.adicionarProduto(pizza);
-        vendaTeste4.realizarVenda();
+        VendaService.adicionarProduto(vendaTeste4, pizza);
+        VendaService.finalizarVenda(vendaTeste4, gestor);
         System.out.println("------------------------");
 
 

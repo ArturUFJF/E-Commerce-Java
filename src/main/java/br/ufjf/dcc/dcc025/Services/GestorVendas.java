@@ -53,7 +53,7 @@ public class GestorVendas implements Relatorio {
 
         System.out.println("=== Relatório de Vendas ===");
         for (Venda venda : vendas) {
-            venda.exibirVenda();
+            VendaService.exibirVenda(venda);
             System.out.println("------------------------");
         }
     }
